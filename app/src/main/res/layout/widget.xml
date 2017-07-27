@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/widget_layout_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@android:color/white"
+	android:orientation="vertical">
+
+	<TextView
+		android:id="@+id/stockTitle"
+		style="@style/StockHawkWidget"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/app_name"
+		tools:text="Stock Hawk" />
+
+	<ListView
+		android:id="@+id/stockList"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/stockTitle"
+		android:layout_marginEnd="@dimen/widget_margin"
+		android:layout_marginStart="@dimen/widget_margin"
+		android:layout_marginTop="@dimen/widget_margin" />
+
+	<TextView
+		android:id="@+id/defaultMessage"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_centerVertical="true"
+		android:layout_gravity="center"
+		android:text="@string/widget_nothing_to_show"
+		android:visibility="gone"
+		tools:text="Nothing to show" />
+</RelativeLayout>

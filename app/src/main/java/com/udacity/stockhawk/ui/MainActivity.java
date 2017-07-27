@@ -1,6 +1,8 @@
 package com.udacity.stockhawk.ui;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,11 +25,15 @@ import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
+import com.udacity.stockhawk.widget.WidgetProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
+import static com.udacity.stockhawk.StockHawkApp.HISTORY_EXTRA_KEY;
+import static com.udacity.stockhawk.StockHawkApp.SYMBOL_EXTRA_KEY;
+
+@SuppressWarnings("squid:MaximumInheritanceDepth")
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
         StockAdapter.StockAdapterOnClickHandler {
@@ -45,8 +51,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private StockAdapter adapter;
 
     @Override
-    public void onClick(String symbol) {
-        Timber.d("Symbol clicked: %s", symbol);
+    public void onClick(String symbol, String history) {
+        Bundle extras = new Bundle();
+        extras.putString(SYMBOL_EXTRA_KEY, symbol);
+        extras.putString(HISTORY_EXTRA_KEY, history);
+        Intent intent = new Intent(MainActivity.this, DetailViewActivity.class).putExtras(extras);
+        startActivity(intent);
     }
 
     @Override
@@ -147,8 +157,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.GONE);
         }
         adapter.setCursor(data);
+
+        updateWidget();
     }
 
+    private void updateWidget() {
+        Intent intent = new Intent(this, WidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = {R.xml.widget_provider};
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

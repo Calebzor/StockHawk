@@ -13,6 +13,7 @@ import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -75,9 +76,15 @@ public final class QuoteSyncJob {
                 Stock stock = quotes.get(symbol);
                 StockQuote quote = stock.getQuote();
 
-                float price = quote.getPrice().floatValue();
-                float change = quote.getChange().floatValue();
-                float percentChange = quote.getChangeInPercent().floatValue();
+                BigDecimal quotePrice = quote.getPrice();
+                if (quotePrice == null) {
+                    continue;
+                }
+                float price = quotePrice.floatValue();
+                BigDecimal quoteChange = quote.getChange();
+                float change = quoteChange.floatValue();
+                BigDecimal changeInPercent = quote.getChangeInPercent();
+                float percentChange = changeInPercent.floatValue();
 
                 // WARNING! Don't request historical data for a stock that doesn't exist!
                 // The request will hang forever X_x

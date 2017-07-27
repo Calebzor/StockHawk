@@ -6,13 +6,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.udacity.stockhawk.data.Contract.Quote;
 
+public class DbHelper extends SQLiteOpenHelper {
 
-class DbHelper extends SQLiteOpenHelper {
-
-
+    private static final String REAL_NOT_NULL = " REAL NOT NULL, ";
     private static final String NAME = "StockHawk.db";
     private static final int VERSION = 1;
 
+    public static final String[] COLUMN_PROJECTION =
+            {Contract.Quote._ID, Contract.Quote.COLUMN_SYMBOL, Contract.Quote.COLUMN_PRICE,
+                    Contract.Quote.COLUMN_ABSOLUTE_CHANGE, Contract.Quote.COLUMN_PERCENTAGE_CHANGE,
+                    Contract.Quote.COLUMN_HISTORY,};
 
     DbHelper(Context context) {
         super(context, NAME, null, VERSION);
@@ -20,12 +23,10 @@ class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String builder = "CREATE TABLE " + Quote.TABLE_NAME + " ("
-                + Quote._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Quote.COLUMN_SYMBOL + " TEXT NOT NULL, "
-                + Quote.COLUMN_PRICE + " REAL NOT NULL, "
-                + Quote.COLUMN_ABSOLUTE_CHANGE + " REAL NOT NULL, "
-                + Quote.COLUMN_PERCENTAGE_CHANGE + " REAL NOT NULL, "
+        String builder = "CREATE TABLE " + Quote.TABLE_NAME + " (" + Quote._ID +
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " + Quote.COLUMN_SYMBOL + " TEXT NOT NULL, " +
+                Quote.COLUMN_PRICE + REAL_NOT_NULL + Quote.COLUMN_ABSOLUTE_CHANGE + REAL_NOT_NULL +
+                Quote.COLUMN_PERCENTAGE_CHANGE + REAL_NOT_NULL
                 + Quote.COLUMN_HISTORY + " TEXT NOT NULL, "
                 + "UNIQUE (" + Quote.COLUMN_SYMBOL + ") ON CONFLICT REPLACE);";
 

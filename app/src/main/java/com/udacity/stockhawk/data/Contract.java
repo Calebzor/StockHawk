@@ -19,6 +19,9 @@ public final class Contract {
     @SuppressWarnings("unused")
     public static final class Quote implements BaseColumns {
 
+        private Quote() {
+        }
+
         public static final Uri URI = BASE_URI.buildUpon().appendPath(PATH_QUOTE).build();
         public static final String COLUMN_SYMBOL = "symbol";
         public static final String COLUMN_PRICE = "price";
@@ -31,6 +34,8 @@ public final class Contract {
         public static final int POSITION_ABSOLUTE_CHANGE = 3;
         public static final int POSITION_PERCENTAGE_CHANGE = 4;
         public static final int POSITION_HISTORY = 5;
+        public static final String SORT_ORDER_ASCENDING = " ASC";
+        public static final String SORT_ORDER_DESCENDING = " DESC";
         public static final ImmutableList<String> QUOTE_COLUMNS = ImmutableList.of(
                 _ID,
                 COLUMN_SYMBOL,
